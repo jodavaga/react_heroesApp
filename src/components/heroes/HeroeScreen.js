@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
 import { getHeroById } from '../../selectors/getHeroById';
 
@@ -9,7 +9,9 @@ export const HeroeScreen = ( { history } ) => {
     const { heroId } = useParams();
     // console.log( heroId );
 
-    const hero = getHeroById( heroId );
+    // useMemo to improve performance
+    const hero = useMemo(() => getHeroById( heroId ), [ heroId ] );
+    // const hero = getHeroById( heroId );
 
     // If no hero found, redirect to Home
     if ( !hero ) return <Redirect to="/" />
@@ -17,9 +19,9 @@ export const HeroeScreen = ( { history } ) => {
     const {  superhero, publisher, alter_ego, first_appearance, characters } = hero;
 
     const handleBack = () => {
-        console.log(history.length);
+        // console.log(history.length);
 
-        // if history not found, redirect to Home
+        // if no history found, redirect to Home
         if ( history.length <= 2 ) {
             history.push("/");
         } else {
@@ -36,10 +38,10 @@ export const HeroeScreen = ( { history } ) => {
 
             <div className="row">
                 <div className="col-md-4">
-                    <img className="img-thumbnail" src={ `/assets/heroes/${ heroId }.jpg` } alt={ superhero }/>
+                    <img className="img-thumbnail animate__animated animate__fadeInLeft" src={ `/assets/heroes/${ heroId }.jpg` } alt={ superhero }/>
                 </div>
 
-                <div className="col-md-8">
+                <div className="col-md-8 animate__animated animate__fadeIn">
                     <h3>{ superhero }<small> - { publisher }</small></h3>
 
                     <ul className="list-group list-group-flush mt-5">
